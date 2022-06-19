@@ -5,10 +5,16 @@ const morgan = require('morgan')
 const app = express()
 const port = 3000
 
-app.use(express.static(path.join(__dirname,'public')))
+const route = require('./routes')
 
-// HTTP logger
-app.use(morgan('short'))
+app.use(express.static(path.join(__dirname,'public')))
+app.use(express.urlencoded({
+    extended: true
+}))
+app.use(express.json())
+
+// HTTP logger 
+// app.use(morgan('short'))
 
 // Template engine
 app.engine('hbs', handlebars.engine({
@@ -17,14 +23,10 @@ app.engine('hbs', handlebars.engine({
 app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname, 'resources/views'))
 
-// Routes
-app.get('/', (req, res) => {
-    res.render('home')
-})
 
-app.get('/news', (req, res) => {
-    res.render('news')
-})
+// Routes init
+route(app)
+
 
 
 
