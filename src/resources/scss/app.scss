@@ -1,9 +1,7 @@
 @import 'variables';
 
-h1 {
-    color: $red-color;
-}
-
-h2 {
-    color: $green-color;
+.user-avt {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
 }

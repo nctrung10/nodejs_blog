@@ -1,0 +1,26 @@
+<div class="mt-3">
+    <h3>Create course</h3>
+    <div class="row">
+        <div class="col-md-6 my-2 mx-auto">
+            <form method="POST" action="/courses/store">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Course name</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="videoId" class="form-label">Video ID</label>
+                    <input type="text" class="form-control" id="videoId" name="videoId">
+                </div>
+                <div class="mb-3">
+                    <label for="level" class="form-label">Level</label>
+                    <input type="text" class="form-control" id="level" name="level">
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
