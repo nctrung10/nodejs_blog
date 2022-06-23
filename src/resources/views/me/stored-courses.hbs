@@ -1,10 +1,33 @@
-<div class="my-3">
+<form class="my-3" method="POST" action="/courses/handle-form-actions">
     <h3>My Course</h3>
-    <a href="/me/trash/courses" class="text-decoration-none">Trash</a>
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="/me/trash/courses" class="text-decoration-none">Trash ({{deletedCount}})</a>
+        <a href="/courses/create" class="btn btn-primary">Create new course</a>
+    </div>
+
+    <div class="mt-3 d-flex align-items-center">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="selectAll">
+            <label class="form-check-label" for="selectAll">
+                Select all
+            </label>    
+        </div>
+
+        <select class="form-select form-select-sm w-auto mx-2" name="action" required>
+            <option value="">-- Action --</option>
+            <option value="delete">Delete</option>
+        </select>
+
+        <button class="btn btn-sm btn-primary btn-apply-checkall disabled">
+            Apply
+        </button>
+    </div>
+
     <div class="table-responsive">
         <table class="table mt-3">
             <thead class="table-light">
                 <tr>
+                    <th></th>
                     <th scope="col">#</th>
                     <th scope="col">Course name</th>
                     <th scope="col">Level</th>
@@ -15,13 +38,18 @@
             <tbody>
                 {{#each courses}}
                 <tr>
+                    <td>
+                        <div>
+                            <input class="form-check-input" name="courseIds[]" value="{{this._id}}" type="checkbox">
+                        </div>
+                    </td>
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
                     <td>{{this.level}}</td>
                     <td>{{this.createdAt}}</td>
                     <td>
                         <a href="/courses/{{this._id}}/edit" class="btn btn-link">Edit</a>
-                        <a class="btn btn-link text-danger" data-bs-id="{{this._id}}" data-bs-toggle="modal"
+                        <a class="btn btn-link link-danger" data-bs-id="{{this._id}}" data-bs-toggle="modal"
                             data-bs-target="#delCourse">
                             Delete
                         </a>
@@ -38,7 +66,7 @@
             </tbody>
         </table>
     </div>
-</div>
+</form>
 
 {{!-- Confirm delete course --}}
 <div class="modal fade" tabindex="-1" id="delCourse">
@@ -68,6 +96,9 @@
     var delCourseForm = document.forms['del-course-form'];
     var courseId;
     var delCourse = document.getElementById('delCourse');
+    var selectAll = document.querySelector('#selectAll');
+    var courseItemsChecked = document.querySelectorAll('input[name="courseIds[]"]');
+    var checkAllSubmitBtn = document.querySelector('.btn-apply-checkall');
     //get course id when delete course btn clicked
     delCourse.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
@@ -78,4 +109,33 @@
         delCourseForm.action = '/courses/' + courseId + '?_method=DELETE';
         delCourseForm.submit();
     }
+    //checkbox all clicked
+    selectAll.onchange = function(e) {
+        var isCheckedAll = e.target.checked;        
+        for(var i = 0; i < courseItemsChecked.length; i++) {
+            courseItemsChecked[i].checked = isCheckedAll;
+        }
+        renderCheckAllSubmitBtn();
+    }
+    //course item checkbox changed
+    courseItemsChecked.forEach(item => {
+        item.onchange = function() {
+            const isCheckedAll = courseItemsChecked.length === document.querySelectorAll('input[name="courseIds[]"]:checked').length;
+            selectAll.checked = isCheckedAll;
+
+            renderCheckAllSubmitBtn();
+        }
+    })
+    
+    //re-render check all submit button
+    function renderCheckAllSubmitBtn() {
+        var checkedCount = document.querySelectorAll('input[name="courseIds[]"]:checked').length;
+        if (checkedCount > 0) {
+            checkAllSubmitBtn.classList.remove('disabled')
+        } else {
+            checkAllSubmitBtn.classList.add('disabled')
+        }
+    }
+
+    
 </script>
