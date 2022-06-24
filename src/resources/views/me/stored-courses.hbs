@@ -7,7 +7,7 @@
 
     <div class="mt-3 d-flex align-items-center">
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="selectAll">
+            <input class="form-check-input" type="checkbox" id="selectAll">
             <label class="form-check-label" for="selectAll">
                 Select all
             </label>    
@@ -18,9 +18,7 @@
             <option value="delete">Delete</option>
         </select>
 
-        <button class="btn btn-sm btn-primary btn-apply-checkall disabled">
-            Apply
-        </button>
+        <button class="btn btn-sm btn-primary btn-apply-checkall disabled">Apply</button>
     </div>
 
     <div class="table-responsive">
@@ -29,9 +27,18 @@
                 <tr>
                     <th></th>
                     <th scope="col">#</th>
-                    <th scope="col">Course name</th>
-                    <th scope="col">Level</th>
-                    <th scope="col">Created date</th>
+                    <th scope="col">
+                        Course name
+                        {{{sortable 'name' _sort}}}
+                    </th>
+                    <th scope="col">
+                        Level
+                        {{{sortable 'level' _sort}}}
+                    </th>
+                    <th scope="col">
+                        Created date
+                        {{{sortable 'createdAt' _sort}}}
+                    </th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -99,17 +106,19 @@
     var selectAll = document.querySelector('#selectAll');
     var courseItemsChecked = document.querySelectorAll('input[name="courseIds[]"]');
     var checkAllSubmitBtn = document.querySelector('.btn-apply-checkall');
-    //get course id when delete course btn clicked
+
+    //get course id when delete-course-btn clicked
     delCourse.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
         courseId = button.getAttribute('data-bs-id');
     })
-    //submit form to delete when delete course btn clicked
+    //submit form to delete when delete-course-btn clicked
     btnDelCourse.onclick = function() {
         delCourseForm.action = '/courses/' + courseId + '?_method=DELETE';
         delCourseForm.submit();
     }
-    //checkbox all clicked
+
+    //checkbox select-all clicked
     selectAll.onchange = function(e) {
         var isCheckedAll = e.target.checked;        
         for(var i = 0; i < courseItemsChecked.length; i++) {
@@ -126,7 +135,6 @@
             renderCheckAllSubmitBtn();
         }
     })
-    
     //re-render check all submit button
     function renderCheckAllSubmitBtn() {
         var checkedCount = document.querySelectorAll('input[name="courseIds[]"]:checked').length;
@@ -136,6 +144,4 @@
             checkAllSubmitBtn.classList.add('disabled')
         }
     }
-
-    
 </script>
