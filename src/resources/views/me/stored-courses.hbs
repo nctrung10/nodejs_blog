@@ -6,14 +6,9 @@
     </div>
 
     <div class="mt-3 d-flex align-items-center">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="selectAll">
-            <label class="form-check-label" for="selectAll">
-                Select all
-            </label>    
-        </div>
+        
 
-        <select class="form-select form-select-sm w-auto mx-2" name="action" required>
+        <select class="form-select form-select-sm w-auto me-2" name="action" required>
             <option value="">-- Action --</option>
             <option value="delete">Delete</option>
         </select>
@@ -25,8 +20,15 @@
         <table class="table mt-3">
             <thead class="table-light">
                 <tr>
-                    <th></th>
-                    <th scope="col">#</th>
+                    <th scope="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="selectAll">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        ID
+                        {{{sortable '_id' _sort}}}
+                    </th>
                     <th scope="col">
                         Course name
                         {{{sortable 'name' _sort}}}
@@ -50,7 +52,7 @@
                             <input class="form-check-input" name="courseIds[]" value="{{this._id}}" type="checkbox">
                         </div>
                     </td>
-                    <th scope="row">{{sum @index 1}}</th>
+                    <th scope="row">{{this._id}}</th>
                     <td>{{this.name}}</td>
                     <td>{{this.level}}</td>
                     <td>{{this.createdAt}}</td>
