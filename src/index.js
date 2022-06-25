@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const app = express();
 const port = 3000;
 
-const SortMiddleware = require('./app/middlewares/SortMiddleware');
+const sortMiddleware = require('./app/middlewares/sortMiddleware');
 
 const route = require('./routes');
 const db = require('./config/db');
@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 
-app.use(SortMiddleware);
+app.use(sortMiddleware);
 
 // HTTP logger
 // app.use(morgan('short'))
